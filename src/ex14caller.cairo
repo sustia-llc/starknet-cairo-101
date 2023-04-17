@@ -222,6 +222,11 @@ mod Ex14Caller {
         let mut secret_value = Iex11Dispatcher { contract_address: ex11_address::read() }.secret_value();
         
         // if the number is large, need to re-add 42069_u128 before comparison
+        // NOTE: this code will not accurately predict values between
+        // 340282366920938463463374607431768211455_u128 - 42069_u128 - 42069_u128 - 42069_u128 + 1
+        // and 340282366920938463463374607431768211455_u128 - 42069_u128
+        // If you find a secret value in this gray area, you can always check the next_secret_value_i_chose
+        // in the last *successful* transaction, to verify success check internal calls on the tx for "remove_points"
         if (secret_value + 42069_u128 > 340282366920938463463374607431768211455_u128 - 42069_u128) {
             secret_value += 42069_u128;
         } else {
